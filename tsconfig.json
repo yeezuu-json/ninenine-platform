@@ -32,6 +32,9 @@
     },
     {
       "path": "./apps/backend/ws-gateway-svc"
+    },
+    {
+      "path": "./packages/backend/game-events"
     }
   ]
 }
