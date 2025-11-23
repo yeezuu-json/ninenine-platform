@@ -20,6 +20,12 @@
     },
     {
       "path": "./apps/backend/game-provider-svc"
+    },
+    {
+      "path": "./apps/backend/game-engine-hub-e2e"
+    },
+    {
+      "path": "./apps/backend/game-engine-hub"
     }
   ]
 }
