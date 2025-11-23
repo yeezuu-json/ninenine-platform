@@ -52,7 +52,10 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/backend/http-gateway-svc-e2e/**/*"]
+      "exclude": [
+        "apps/backend/http-gateway-svc-e2e/**/*",
+        "apps/backend/game-platform-svc-e2e/**/*"
+      ]
     }
   ],
   "targetDefaults": {
