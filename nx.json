@@ -54,7 +54,8 @@
       },
       "exclude": [
         "apps/backend/http-gateway-svc-e2e/**/*",
-        "apps/backend/game-platform-svc-e2e/**/*"
+        "apps/backend/game-platform-svc-e2e/**/*",
+        "apps/backend/game-provider-svc-e2e/**/*"
       ]
     }
   ],
