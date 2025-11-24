@@ -83,10 +83,21 @@
       }
     }
   },
+  "scripts": {
+    "typeorm": "TS_NODE_PROJECT=tsconfig.typeorm.json typeorm-ts-node-commonjs -d ormconfig.ts",
+    "migration:generate": "pnpm typeorm migration:generate",
+    "migration:create": "pnpm typeorm migration:create",
+    "migration:run": "pnpm typeorm migration:run",
+    "migration:revert": "pnpm typeorm migration:revert",
+    "schema:drop": "pnpm typeorm schema:drop",
+    "schema:sync": "pnpm typeorm schema:sync"
+  },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@ninenine/config": "workspace:*",
+    "@ninenine/database": "workspace:*",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"
