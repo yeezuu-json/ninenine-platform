@@ -1,0 +1,20 @@
+{
+  "name": "auth-sdk",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/backend/auth-sdk/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/backend/auth-sdk",
+        "tsConfig": "packages/backend/auth-sdk/tsconfig.lib.json",
+        "packageJson": "packages/backend/auth-sdk/package.json",
+        "main": "packages/backend/auth-sdk/src/index.ts",
+        "assets": ["packages/backend/auth-sdk/*.md"]
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "core",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/backend/core/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/backend/core",
+        "tsConfig": "packages/backend/core/tsconfig.lib.json",
+        "packageJson": "packages/backend/core/package.json",
+        "main": "packages/backend/core/src/index.ts",
+        "assets": ["packages/backend/core/*.md"]
+      }
+    }
+  }
+}

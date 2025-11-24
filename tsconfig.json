@@ -35,6 +35,30 @@
     },
     {
       "path": "./packages/backend/game-events"
+    },
+    {
+      "path": "./packages/backend/redis"
+    },
+    {
+      "path": "./packages/backend/config"
+    },
+    {
+      "path": "./packages/backend/database"
+    },
+    {
+      "path": "./packages/backend/logger"
+    },
+    {
+      "path": "./packages/backend/contracts"
+    },
+    {
+      "path": "./packages/backend/core"
+    },
+    {
+      "path": "./packages/backend/auth-sdk"
+    },
+    {
+      "path": "./packages/backend/message-bus"
     }
   ]
 }
