@@ -15,7 +15,7 @@ export default new DataSource({
   migrations: [
     join(
       process.cwd(),
-      '../../../packages/backend/database/src/lib/migrations/*{.ts,.js}'
+      '../../../packages/backend/database/src/lib/migrations/game-engine-hub/*{.ts,.js}'
     ),
   ],
   synchronize: process.env.DB_SYNCHRONIZE === 'true',
