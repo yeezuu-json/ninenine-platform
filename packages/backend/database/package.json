@@ -14,7 +14,16 @@
       "default": "./dist/index.js"
     }
   },
+  "scripts": {
+    "migration:generate": ""
+  },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/typeorm": "^11.0.0",
+    "@ninenine/config": "workspace:*",
+    "typeorm": "^0.3.27",
+    "dotenv": "^17.2.3"
   }
 }
