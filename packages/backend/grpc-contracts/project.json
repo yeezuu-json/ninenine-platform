@@ -1,0 +1,20 @@
+{
+  "name": "grpc-contracts",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/backend/grpc-contracts/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/backend/grpc-contracts",
+        "tsConfig": "packages/backend/grpc-contracts/tsconfig.lib.json",
+        "packageJson": "packages/backend/grpc-contracts/package.json",
+        "main": "packages/backend/grpc-contracts/src/index.ts",
+        "assets": ["packages/backend/grpc-contracts/*.md"]
+      }
+    }
+  }
+}

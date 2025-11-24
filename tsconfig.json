@@ -59,6 +59,9 @@
     },
     {
       "path": "./packages/backend/message-bus"
+    },
+    {
+      "path": "./packages/backend/grpc-contracts"
     }
   ]
 }
