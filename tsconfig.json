@@ -74,6 +74,12 @@
     },
     {
       "path": "./apps/backend/auth-svc"
+    },
+    {
+      "path": "./apps/backend/user-svc-e2e"
+    },
+    {
+      "path": "./apps/backend/user-svc"
     }
   ]
 }

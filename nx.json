@@ -59,7 +59,8 @@
         "apps/backend/game-engine-hub-e2e/**/*",
         "apps/backend/ws-gateway-svc-e2e/**/*",
         "apps/backend/backoffice-api-e2e/**/*",
-        "apps/backend/auth-svc-e2e/**/*"
+        "apps/backend/auth-svc-e2e/**/*",
+        "apps/backend/user-svc-e2e/**/*"
       ]
     }
   ],
