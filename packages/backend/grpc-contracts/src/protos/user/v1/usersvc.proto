@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package io.ninenine.user.v1;
+
+import "google/protobuf/timestamp.proto";
+
+service UserService {
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+}
+
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message GetUserResponse {
+  string user_id = 1;
+  string username = 2;
+}

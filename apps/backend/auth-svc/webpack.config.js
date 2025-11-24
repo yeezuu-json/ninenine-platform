@@ -9,31 +9,16 @@ module.exports = {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     }),
   },
-  resolve: {
-    conditionNames: [
-      '@ninenine-platform/source',
-      'import',
-      'require',
-      'node',
-      'default',
-    ],
-    symlinks: true,
-  },
-  module: {
-    rules: [
-      {
-        test: /\.proto$/,
-        type: 'asset/resource',
-      },
-    ],
-  },
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',
       compiler: 'tsc',
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
-      assets: ['./src/assets'],
+      assets: [
+        './src/assets',
+        process.cwd() + '/dist/packages/backend/grpc-contracts/src/protos',
+      ],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: true,

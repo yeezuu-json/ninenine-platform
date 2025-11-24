@@ -1,0 +1,26 @@
+{
+  "name": "@ninenine-platform/auth-svc-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@ninenine-platform/auth-svc"
+    ],
+    "targets": {
+      "e2e": {
+        "executor": "@nx/jest:jest",
+        "outputs": [
+          "{projectRoot}/test-output/jest/coverage"
+        ],
+        "options": {
+          "jestConfig": "apps/backend/auth-svc-e2e/jest.config.cts",
+          "passWithNoTests": true
+        },
+        "dependsOn": [
+          "@ninenine-platform/auth-svc:build",
+          "@ninenine-platform/auth-svc:serve"
+        ]
+      }
+    }
+  }
+}

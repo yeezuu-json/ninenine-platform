@@ -1,20 +1,18 @@
 {
-  "name": "@ninenine-platform/http-gateway-svc",
+  "name": "@ninenine-platform/auth-svc",
   "version": "0.0.1",
   "private": true,
   "nx": {
     "targets": {
       "build": {
-        "dependsOn": [
-          "nx run grpc-contracts:build"
-        ],
         "executor": "nx:run-commands",
         "options": {
           "command": "webpack-cli build",
           "args": [
             "--node-env=production"
           ],
-          "cwd": "apps/backend/http-gateway-svc"
+          "cwd": "apps/backend/auth-svc",
+          "assets": []
         },
         "configurations": {
           "development": {
@@ -31,8 +29,8 @@
         "cache": true,
         "executor": "@nx/js:prune-lockfile",
         "outputs": [
-          "{workspaceRoot}/apps/backend/http-gateway-svc/dist/package.json",
-          "{workspaceRoot}/apps/backend/http-gateway-svc/dist/pnpm-lock.yaml"
+          "{workspaceRoot}/apps/backend/auth-svc/dist/package.json",
+          "{workspaceRoot}/apps/backend/auth-svc/dist/pnpm-lock.yaml"
         ],
         "options": {
           "buildTarget": "build"
@@ -44,7 +42,7 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/apps/backend/http-gateway-svc/dist/workspace_modules"
+          "{workspaceRoot}/apps/backend/auth-svc/dist/workspace_modules"
         ],
         "executor": "@nx/js:copy-workspace-modules",
         "options": {
@@ -66,15 +64,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@ninenine-platform/http-gateway-svc:build",
+          "buildTarget": "@ninenine-platform/auth-svc:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@ninenine-platform/http-gateway-svc:build:development"
+            "buildTarget": "@ninenine-platform/auth-svc:build:development"
           },
           "production": {
-            "buildTarget": "@ninenine-platform/http-gateway-svc:build:production"
+            "buildTarget": "@ninenine-platform/auth-svc:build:production"
           }
         }
       },
@@ -89,8 +87,6 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
-    "@ninenine/config": "workspace:*",
-    "@ninenine/core": "workspace:*",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"

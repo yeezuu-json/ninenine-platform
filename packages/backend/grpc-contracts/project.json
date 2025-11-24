@@ -13,7 +13,10 @@
         "tsConfig": "packages/backend/grpc-contracts/tsconfig.lib.json",
         "packageJson": "packages/backend/grpc-contracts/package.json",
         "main": "packages/backend/grpc-contracts/src/index.ts",
-        "assets": ["packages/backend/grpc-contracts/*.md"]
+        "assets": [
+          "packages/backend/grpc-contracts/*.md",
+          "packages/backend/grpc-contracts/src/protos/**/**/*.proto"
+        ]
       }
     }
   }

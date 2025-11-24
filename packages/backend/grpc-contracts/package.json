@@ -2,19 +2,18 @@
   "name": "@ninenine/grpc-contracts",
   "version": "0.0.1",
   "private": true,
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "scripts": {
+    "proto:generate": "protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=generated --ts_proto_opt=nestJs=true --proto_path=proto \"protos/**/**/*.proto\""
+  },
   "exports": {
     "./package.json": "./package.json",
-    ".": {
-      "@ninenine-platform/source": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
+    "./protos/*": "./src/protos/**/**/*.proto"
   },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "google-protobuf": "^4.0.1",
+    "grpc-tools": "^1.13.0"
   }
 }

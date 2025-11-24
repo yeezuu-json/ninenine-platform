@@ -62,6 +62,18 @@
     },
     {
       "path": "./packages/backend/grpc-contracts"
+    },
+    {
+      "path": "./apps/backend/backoffice-api-e2e"
+    },
+    {
+      "path": "./apps/backend/backoffice-api"
+    },
+    {
+      "path": "./apps/backend/auth-svc-e2e"
+    },
+    {
+      "path": "./apps/backend/auth-svc"
     }
   ]
 }

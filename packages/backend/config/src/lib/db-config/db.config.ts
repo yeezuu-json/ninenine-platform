@@ -4,31 +4,31 @@ import { plainToInstance } from 'class-transformer';
 
 export class DatabaseConfiguration {
   @IsString()
-  DB_HOST: string;
+  DB_HOST!: string;
 
   @IsNumber()
-  DB_PORT: number = 5432;
+  DB_PORT!: number;
 
   @IsString()
-  DB_USERNAME: string;
+  DB_USERNAME!: string;
 
   @IsString()
-  DB_PASSWORD: string;
+  DB_PASSWORD!: string;
 
   @IsString()
-  DB_DATABASE: string;
+  DB_DATABASE!: string;
 
   @IsBoolean()
-  DB_SYNCHRONIZE: boolean = false;
+  DB_SYNCHRONIZE!: boolean;
 
   @IsBoolean()
-  DB_LOGGING: boolean = false;
+  DB_LOGGING!: boolean;
 
   @IsNumber()
-  DB_MAX_CONNECTIONS: number = 10;
+  DB_MAX_CONNECTIONS!: number;
 
   @IsBoolean()
-  DB_SSL_ENABLED: boolean = false;
+  DB_SSL_ENABLED!: boolean;
 }
 
 export default registerAs('database', () => {
@@ -47,7 +47,7 @@ export default registerAs('database', () => {
     },
     {
       enableImplicitConversion: true,
-    },
+    }
   );
   return config;
 });

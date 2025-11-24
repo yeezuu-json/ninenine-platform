@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RpcModule } from '@ninenine/core';
-import { ConfigModule } from '@ninenine/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [ConfigModule, RpcModule],
+  imports: [],
   controllers: [AppController],
   providers: [AppService],
 })
