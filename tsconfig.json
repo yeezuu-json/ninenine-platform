@@ -80,6 +80,12 @@
     },
     {
       "path": "./apps/backend/user-svc"
+    },
+    {
+      "path": "./apps/backend/notification-svc-e2e"
+    },
+    {
+      "path": "./apps/backend/notification-svc"
     }
   ]
 }
