@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "typeorm": "TS_NODE_PROJECT=tsconfig.typeorm.json typeorm-ts-node-commonjs -d ormconfig.ts",
+    "typeorm": "NODE_OPTIONS='-r ./typeorm-register.js' TS_NODE_PROJECT=tsconfig.typeorm.json typeorm-ts-node-commonjs -d ormconfig.ts",
     "migration:generate": "pnpm typeorm migration:generate",
     "migration:create": "pnpm typeorm migration:create",
     "migration:run": "pnpm typeorm migration:run",
@@ -99,6 +99,8 @@
     "@ninenine/core": "workspace:*",
     "@ninenine/database": "workspace:*",
     "@ninenine/contracts": "workspace:*",
+    "@ninenine/game-engine": "workspace:*",
+    "@ninenine/game-events": "workspace:*",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0"

@@ -6,9 +6,12 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "customConditions": ["@ninenine-platform/source"],
     "baseUrl": ".",
     "paths": {
-      "@ninenine/database": ["../../../dist/packages/backend/database"]
+      "@ninenine/database": ["../../../packages/backend/database/src"],
+      "@ninenine/config": ["../../../packages/backend/config/src"],
+      "@ninenine/contracts": ["../../../packages/contracts/src"]
     }
   },
   "include": ["src/**/*.ts", "ormconfig.ts"],

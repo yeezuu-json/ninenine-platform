@@ -86,8 +86,14 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/platform-socket.io": "^11.1.9",
+    "@nestjs/websockets": "^11.1.9",
+    "@ninenine/config": "workspace:*",
+    "@ninenine/contracts": "workspace:*",
+    "@ninenine/game-events": "workspace:*",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "socket.io": "^4.8.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

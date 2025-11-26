@@ -9,6 +9,24 @@ module.exports = {
       devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     }),
   },
+  resolve: {
+    conditionNames: [
+      '@ninenine-platform/source',
+      'import',
+      'require',
+      'node',
+      'default',
+    ],
+    symlinks: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.proto$/,
+        type: 'asset/resource',
+      },
+    ],
+  },
   plugins: [
     new NxAppWebpackPlugin({
       target: 'node',

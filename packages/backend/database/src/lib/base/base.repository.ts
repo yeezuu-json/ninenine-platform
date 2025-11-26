@@ -44,17 +44,14 @@ export abstract class BaseRepository<TDomain, TOrm extends ObjectLiteral> {
     };
   }
 
-  async save(
-    domain: TDomain,
-    toOrm: (domain: TDomain) => TOrm
-  ): Promise<TDomain> {
-    const ormEntity = toOrm(domain);
+  async save(domain: TDomain): Promise<TDomain> {
+    const ormEntity = this.mapToEntity(domain);
     const saved = await this.ormRepo.save(ormEntity);
     return this.mapToDomain(saved);
   }
 
   async softDelete(id: string): Promise<void> {
-    await this.ormRepo.delete(id);
+    await this.ormRepo.softDelete(id);
   }
 
   async existsById(id: string): Promise<boolean> {

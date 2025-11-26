@@ -1,1 +1,2 @@
-export * from './lib/game-events.module';
+export * from './contracts/game-events.publisher';
+export * from './events/lotto80.events';

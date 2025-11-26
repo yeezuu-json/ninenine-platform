@@ -23,9 +23,9 @@ export interface DatabaseModuleOptions {
   name?: string;
 
   /**
-   * Entity patterns to load
+   * Entity patterns to load (glob patterns or entity classes)
    */
-  entities: string[];
+  entities: (string | Function)[];
 
   /**
    * Optional migrations path

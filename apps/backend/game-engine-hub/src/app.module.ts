@@ -2,18 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@ninenine/config';
 import { DatabaseModule } from '@ninenine/database';
 import { join } from 'path';
-import { GameEnginePersistenceModule } from './infrastructure/gane-engine-persistence.module';
+import { Lotto80Module } from './engines/lotto80/lotto80.module';
+import { Lotto80Entity } from './engines/lotto80/infrastructure/persistence/entities/lotto80.entity';
 
 @Module({
   imports: [
     ConfigModule,
     DatabaseModule.forRoot({
-      entities: [
-        join(
-          __dirname,
-          'infrastructure/persistence/entities/*.entity{.ts,.js}'
-        ),
-      ],
+      entities: [Lotto80Entity],
       synchronize: false,
       migrationsPath: join(
         __dirname,
@@ -22,7 +18,7 @@ import { GameEnginePersistenceModule } from './infrastructure/gane-engine-persis
       migrationsRun: false,
       logging: true,
     }),
-    GameEnginePersistenceModule,
+    Lotto80Module,
   ],
 })
 export class AppModule {}

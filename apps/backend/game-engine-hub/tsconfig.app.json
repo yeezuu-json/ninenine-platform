@@ -23,6 +23,12 @@
   ],
   "references": [
     {
+      "path": "../../../packages/backend/game-events/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/backend/game-engine/tsconfig.lib.json"
+    },
+    {
       "path": "../../../packages/backend/contracts/tsconfig.lib.json"
     },
     {

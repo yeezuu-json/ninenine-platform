@@ -1,0 +1,20 @@
+{
+  "name": "game-engine",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/backend/game-engine/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/backend/game-engine",
+        "tsConfig": "packages/backend/game-engine/tsconfig.lib.json",
+        "packageJson": "packages/backend/game-engine/package.json",
+        "main": "packages/backend/game-engine/src/index.ts",
+        "assets": ["packages/backend/game-engine/*.md"]
+      }
+    }
+  }
+}
