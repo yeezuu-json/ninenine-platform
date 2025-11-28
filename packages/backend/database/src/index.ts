@@ -1,2 +1,5 @@
 export * from './lib/database.module';
-export * from './lib/entities/base.entity';
+export * from './lib/base/';
+
+// Re-export transaction decorator for convenience
+export { Transactional } from 'typeorm-transactional';

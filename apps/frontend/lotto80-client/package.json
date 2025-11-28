@@ -1,0 +1,11 @@
+{
+  "name": "@ninenine-platform/lotto80-client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@ninenine-platform/ui": "workspace:*",
+    "@ninenine/core-provider": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.17",
+    "tailwindcss": "^4.1.17"
+  }
+}

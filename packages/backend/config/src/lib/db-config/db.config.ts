@@ -31,15 +31,15 @@ export class DatabaseConfiguration {
   DB_SSL_ENABLED!: boolean;
 }
 
-export default registerAs('database', () => {
+export default registerAs('db', () => {
   const config = plainToInstance(
     DatabaseConfiguration,
     {
       DB_HOST: process.env.DB_HOST,
       DB_PORT: parseInt(process.env.DB_PORT || '5432', 10),
-      DB_USERNAME: process.env.DB_USER,
-      DB_PASSWORD: process.env.DB_PASSWORD,
-      DB_DATABASE: process.env.DB_NAME,
+      DB_USERNAME: process.env.DB_USERNAME || '',
+      DB_PASSWORD: process.env.DB_PASSWORD || '',
+      DB_DATABASE: process.env.DB_DATABASE,
       DB_SYNCHRONIZE: process.env.DB_SYNCHRONIZE === 'true',
       DB_LOGGING: process.env.DB_LOGGING === 'true',
       DB_MAX_CONNECTIONS: parseInt(process.env.DB_MAX_CONNECTIONS || '10', 10),

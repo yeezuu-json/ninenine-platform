@@ -20,5 +20,25 @@
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../../../packages/backend/game-events/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/backend/game-engine/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/backend/contracts/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/backend/database/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/backend/core/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/backend/config/tsconfig.lib.json"
+    }
   ]
 }

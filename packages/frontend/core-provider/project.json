@@ -1,0 +1,9 @@
+{
+  "name": "core-provider",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/frontend/core-provider/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project core-provider --web",
+  "targets": {}
+}

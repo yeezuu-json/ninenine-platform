@@ -2,19 +2,13 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
   "references": [
-    {
-      "path": "./apps/backend/http-gateway-svc-e2e"
-    },
-    {
-      "path": "./apps/backend/http-gateway-svc"
-    },
-    {
-      "path": "./apps/backend/game-platform-svc-e2e"
-    },
-    {
-      "path": "./apps/backend/game-platform-svc"
-    },
     {
       "path": "./apps/backend/game-provider-svc-e2e"
     },
@@ -32,6 +26,12 @@
     },
     {
       "path": "./apps/backend/ws-gateway-svc"
+    },
+    {
+      "path": "./apps/backend/notification-svc-e2e"
+    },
+    {
+      "path": "./apps/backend/notification-svc"
     },
     {
       "path": "./packages/backend/game-events"
@@ -64,28 +64,19 @@
       "path": "./packages/backend/grpc-contracts"
     },
     {
-      "path": "./apps/backend/backoffice-api-e2e"
+      "path": "./packages/backend/game-engine"
     },
     {
-      "path": "./apps/backend/backoffice-api"
+      "path": "./apps/frontend/lotto80-client-e2e"
     },
     {
-      "path": "./apps/backend/auth-svc-e2e"
+      "path": "./apps/frontend/lotto80-client"
     },
     {
-      "path": "./apps/backend/auth-svc"
+      "path": "./packages/frontend/ui"
     },
     {
-      "path": "./apps/backend/user-svc-e2e"
-    },
-    {
-      "path": "./apps/backend/user-svc"
-    },
-    {
-      "path": "./apps/backend/notification-svc-e2e"
-    },
-    {
-      "path": "./apps/backend/notification-svc"
+      "path": "./packages/frontend/core-provider"
     }
   ]
 }

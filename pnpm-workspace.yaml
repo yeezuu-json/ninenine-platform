@@ -2,3 +2,5 @@ packages:
   - 'packages/*'
   - 'apps/backend/*'
   - 'packages/backend/*'
+  - 'apps/frontend/*'
+  - 'packages/frontend/*'

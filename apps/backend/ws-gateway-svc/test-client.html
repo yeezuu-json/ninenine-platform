@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lotto80 WebSocket Test Client</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      h1 {
+        color: #333;
+        margin-top: 0;
+      }
+      .status {
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      .status.connected {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status.disconnected {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+      button.primary {
+        background: #007bff;
+        color: white;
+      }
+      button.success {
+        background: #28a745;
+        color: white;
+      }
+      button.danger {
+        background: #dc3545;
+        color: white;
+      }
+      button:hover {
+        opacity: 0.8;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .events {
+        max-height: 500px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        background: #f8f9fa;
+      }
+      .event {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        border-left: 4px solid #007bff;
+        background: white;
+      }
+      .event.round-opened {
+        border-left-color: #28a745;
+      }
+      .event.countdown {
+        border-left-color: #ffc107;
+      }
+      .event.drawing-started {
+        border-left-color: #17a2b8;
+      }
+      .event.drawing-ball {
+        border-left-color: #6610f2;
+      }
+      .event.round-finished {
+        border-left-color: #fd7e14;
+      }
+      .event.round-settled {
+        border-left-color: #20c997;
+      }
+      .event-type {
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 5px;
+      }
+      .event-data {
+        font-size: 12px;
+        color: #666;
+        font-family: 'Courier New', monospace;
+      }
+      .timestamp {
+        font-size: 11px;
+        color: #999;
+        margin-top: 5px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .stat-card {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 4px;
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 32px;
+        font-weight: bold;
+        color: #007bff;
+      }
+      .stat-label {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+      }
+      input {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .clear-btn {
+        background: #6c757d;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎲 Lotto80 WebSocket Test Client</h1>
+
+      <div id="status" class="status disconnected">⚫ Disconnected</div>
+
+      <div class="controls">
+        <button id="connectBtn" class="primary" onclick="connect()">
+          Connect
+        </button>
+        <button
+          id="disconnectBtn"
+          class="danger"
+          onclick="disconnect()"
+          disabled
+        >
+          Disconnect
+        </button>
+        <button
+          id="subscribeBtn"
+          class="success"
+          onclick="subscribe()"
+          disabled
+        >
+          Subscribe to All
+        </button>
+        <input
+          type="text"
+          id="roundInput"
+          placeholder="Round number (optional)"
+          style="width: 180px"
+        />
+        <button
+          id="subscribeRoundBtn"
+          class="success"
+          onclick="subscribeToRound()"
+          disabled
+        >
+          Subscribe to Round
+        </button>
+        <button
+          id="unsubscribeBtn"
+          class="danger"
+          onclick="unsubscribe()"
+          disabled
+        >
+          Unsubscribe
+        </button>
+        <button id="statsBtn" class="primary" onclick="getStats()" disabled>
+          Get Stats
+        </button>
+        <button class="clear-btn" onclick="clearEvents()">Clear Events</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-value" id="eventsCount">0</div>
+          <div class="stat-label">Events Received</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="currentRound">-</div>
+          <div class="stat-label">Current Round</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="roundStatus">-</div>
+          <div class="stat-label">Round Status</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>📡 Events Stream</h2>
+      <div id="events" class="events">
+        <p style="color: #999; text-align: center">
+          No events yet. Connect and subscribe to see events.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      let socket = null;
+      let eventsCount = 0;
+      let currentRound = null;
+
+      function connect() {
+        const wsUrl = 'ws://localhost:3005/lotto80';
+
+        addEvent('system', 'Connecting to ' + wsUrl, {});
+
+        socket = io(wsUrl, {
+          transports: ['websocket'],
+        });
+
+        socket.on('connect', () => {
+          updateStatus(true);
+          addEvent('system', 'Connected', { clientId: socket.id });
+        });
+
+        socket.on('connected', (data) => {
+          addEvent('connected', 'Welcome message received', data);
+        });
+
+        socket.on('disconnect', () => {
+          updateStatus(false);
+          addEvent('system', 'Disconnected', {});
+        });
+
+        socket.on('lotto80:subscribed', (data) => {
+          addEvent('subscribed', 'Subscription confirmed', data);
+        });
+
+        socket.on('lotto80:unsubscribed', (data) => {
+          addEvent('unsubscribed', 'Unsubscription confirmed', data);
+        });
+
+        socket.on('lotto80:round:opened', (data) => {
+          currentRound = data.roundNumber;
+          updateRoundInfo(data.roundNumber, data.status);
+          addEvent('round-opened', 'Round Opened', data);
+        });
+
+        socket.on('lotto80:countdown', (data) => {
+          updateRoundInfo(data.roundNumber, `OPEN (${data.countdown}s)`);
+          addEvent('countdown', 'Countdown Tick', data);
+        });
+
+        socket.on('lotto80:drawing:started', (data) => {
+          updateRoundInfo(data.roundNumber, data.status);
+          addEvent('drawing-started', 'Drawing Started', data);
+        });
+
+        socket.on('lotto80:drawing:ball', (data) => {
+          addEvent(
+            'drawing-ball',
+            `Ball #${data.position}: ${data.ball}`,
+            data
+          );
+        });
+
+        socket.on('lotto80:drawing:delay', (data) => {
+          addEvent('drawing-delay', 'Drawing Delay', data);
+        });
+
+        socket.on('lotto80:round:finished', (data) => {
+          updateRoundInfo(data.roundNumber, data.status);
+          addEvent('round-finished', 'Round Finished', data);
+        });
+
+        socket.on('lotto80:round:settled', (data) => {
+          updateRoundInfo(data.roundNumber, data.status);
+          addEvent('round-settled', 'Round Settled', data);
+        });
+
+        socket.on('lotto80:stats', (data) => {
+          addEvent('stats', 'Stats Received', data);
+        });
+      }
+
+      function disconnect() {
+        if (socket) {
+          socket.disconnect();
+          socket = null;
+          updateStatus(false);
+        }
+      }
+
+      function subscribe() {
+        if (socket) {
+          socket.emit('lotto80:subscribe');
+          addEvent('system', 'Subscribing to all events', {});
+        }
+      }
+
+      function subscribeToRound() {
+        if (socket) {
+          const roundNumber = document.getElementById('roundInput').value;
+          if (roundNumber) {
+            socket.emit('lotto80:subscribe', { roundNumber });
+            addEvent('system', `Subscribing to round ${roundNumber}`, {});
+          } else {
+            alert('Please enter a round number');
+          }
+        }
+      }
+
+      function unsubscribe() {
+        if (socket) {
+          socket.emit('lotto80:unsubscribe');
+          addEvent('system', 'Unsubscribing', {});
+        }
+      }
+
+      function getStats() {
+        if (socket) {
+          socket.emit('lotto80:stats');
+        }
+      }
+
+      function updateStatus(connected) {
+        const statusEl = document.getElementById('status');
+        const buttons = [
+          'disconnectBtn',
+          'subscribeBtn',
+          'subscribeRoundBtn',
+          'unsubscribeBtn',
+          'statsBtn',
+        ];
+
+        if (connected) {
+          statusEl.className = 'status connected';
+          statusEl.innerHTML = '🟢 Connected';
+          document.getElementById('connectBtn').disabled = true;
+          buttons.forEach(
+            (id) => (document.getElementById(id).disabled = false)
+          );
+        } else {
+          statusEl.className = 'status disconnected';
+          statusEl.innerHTML = '⚫ Disconnected';
+          document.getElementById('connectBtn').disabled = false;
+          buttons.forEach(
+            (id) => (document.getElementById(id).disabled = true)
+          );
+        }
+      }
+
+      function updateRoundInfo(roundNumber, status) {
+        document.getElementById('currentRound').textContent =
+          roundNumber || '-';
+        document.getElementById('roundStatus').textContent = status || '-';
+      }
+
+      function addEvent(type, title, data) {
+        eventsCount++;
+        document.getElementById('eventsCount').textContent = eventsCount;
+
+        const eventsEl = document.getElementById('events');
+
+        // Clear placeholder
+        if (eventsCount === 1) {
+          eventsEl.innerHTML = '';
+        }
+
+        const eventEl = document.createElement('div');
+        eventEl.className = `event ${type}`;
+
+        const timestamp = new Date().toLocaleTimeString();
+
+        eventEl.innerHTML = `
+                <div class="event-type">${title}</div>
+                <div class="event-data">${JSON.stringify(data, null, 2)}</div>
+                <div class="timestamp">${timestamp}</div>
+            `;
+
+        eventsEl.insertBefore(eventEl, eventsEl.firstChild);
+
+        // Limit to last 50 events
+        while (eventsEl.children.length > 50) {
+          eventsEl.removeChild(eventsEl.lastChild);
+        }
+      }
+
+      function clearEvents() {
+        document.getElementById('events').innerHTML =
+          '<p style="color: #999; text-align: center;">Events cleared. Waiting for new events...</p>';
+        eventsCount = 0;
+        document.getElementById('eventsCount').textContent = '0';
+      }
+
+      // Auto-connect on load (optional)
+      // window.onload = connect;
+    </script>
+  </body>
+</html>
