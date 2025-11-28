@@ -25,6 +25,7 @@ import type { GameEventsPublisher } from '@ninenine/game-events';
 export class Lotto80Service {
   private readonly logger = new Logger(Lotto80Service.name);
   private readonly OPEN_DURATION = 150_000;
+  private readonly CLOSING_DELAY = 2_000; // 2 seconds to safely close betting
   private readonly BALL_DELAY = 1_000;
   private readonly FINISHED_DURATION = 3_000;
   private readonly TOTAL_BALLS = 20;
@@ -189,6 +190,10 @@ export class Lotto80Service {
 
       this.logger.debug(`⏱️ Countdown: ${countdown}s`);
     }
+
+    // Closing delay - block all betting during this period
+    this.logger.log(`🔒 Closing bets (${this.CLOSING_DELAY / 1000}s)...`);
+    await this.delay(this.CLOSING_DELAY);
 
     this.logger.log('✅ Phase 1 complete');
   }
