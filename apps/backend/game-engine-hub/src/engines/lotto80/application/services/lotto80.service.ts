@@ -24,8 +24,8 @@ import type { GameEventsPublisher } from '@ninenine/game-events';
 @Injectable()
 export class Lotto80Service {
   private readonly logger = new Logger(Lotto80Service.name);
-  private readonly OPEN_DURATION = 30_000;
-  private readonly BALL_DELAY = 2_000;
+  private readonly OPEN_DURATION = 150_000;
+  private readonly BALL_DELAY = 1_000;
   private readonly FINISHED_DURATION = 3_000;
   private readonly TOTAL_BALLS = 20;
 
@@ -108,16 +108,20 @@ export class Lotto80Service {
         ? latestRound.roundNumber.parse().sequence + 1
         : 1;
       const roundNumber = RoundNumber.generateForToday(sequence);
-      const seed = this.rng.generateSeed();
-      const jackpotConfig = this.determineJackpot(seed);
-      console.log('seed value ', seed.getValue());
+
+      // Generate separate seeds for jackpot and drawing to avoid RNG state collision
+      const jackpotSeed = this.rng.generateSeed();
+      const drawingSeed = this.rng.generateSeed();
+
+      const jackpotConfig = this.determineJackpot(jackpotSeed);
+      console.log('drawing seed value:', drawingSeed.getValue());
 
       const round = Lotto80.create(
         uuidv4(),
         roundNumber,
         jackpotConfig.isJackpot,
         null,
-        seed.getValue(),
+        drawingSeed.getValue(),
         1
       );
 
@@ -166,7 +170,11 @@ export class Lotto80Service {
       )
     );
 
-    for (let countdown = 30; countdown >= 1; countdown--) {
+    for (
+      let countdown = this.OPEN_DURATION / 1000;
+      countdown >= 1;
+      countdown--
+    ) {
       await this.delay(1000);
 
       await this.events.publishRoundCountdown(
@@ -382,7 +390,8 @@ export class Lotto80Service {
       Lotto80Range.RANGE_5,
     ];
 
-    const rangeResult = this.rng.pickRandom(possibleRanges, seed);
+    // Use the seed returned from randomFloat to maintain RNG chain
+    const rangeResult = this.rng.pickRandom(possibleRanges, randomValue.seed);
 
     return { isJackpot, jackpotOnRange: rangeResult.value };
   }
@@ -396,58 +405,51 @@ export class Lotto80Service {
     const targetMin = targetBounds.min;
     const targetMax = targetBounds.max;
 
-    // Draw first 15 balls randomly
-    const drawnBalls: number[] = [];
-    const available = Array.from({ length: 80 }, (_, i) => i + 1);
+    // Use rejection sampling: draw random balls until sum is in target range
+    // This maintains true randomness while achieving the target sum
+    const MAX_ATTEMPTS = 100;
+    let currentSeed = seed;
 
-    for (let i = 0; i < 15; i++) {
-      const idxResult = this.rng.randomInt(0, available.length, seed);
-      drawnBalls.push(available[idxResult.value]);
-      available.splice(idxResult.value, 1);
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      const drawResult = this.rng.drawUniqueNumbers(
+        this.TOTAL_BALLS,
+        1,
+        80,
+        currentSeed
+      );
+      const balls = drawResult.value;
+      const sum = balls.reduce((a, b) => a + b, 0);
+
+      // Accept if sum is in target range
+      if (sum >= targetMin && sum <= targetMax) {
+        this.logger.debug(
+          `🎯 Weighted draw complete (attempt ${
+            attempt + 1
+          }): Sum=${sum}, Target=${targetRange} (${targetMin}-${targetMax})`
+        );
+        return balls;
+      }
+
+      // Use the returned seed for next attempt to maintain randomness
+      currentSeed = drawResult.seed;
     }
 
-    // Calculate current sum
-    let currentSum = drawnBalls.reduce((a, b) => a + b, 0);
+    // Fallback: Use the last draw even if not perfect
+    // This should rarely happen with proper range definitions
+    const fallbackResult = this.rng.drawUniqueNumbers(
+      this.TOTAL_BALLS,
+      1,
+      80,
+      currentSeed
+    );
+    const fallbackBalls = fallbackResult.value;
+    const fallbackSum = fallbackBalls.reduce((a, b) => a + b, 0);
 
-    // Draw last 5 balls with intelligent selection
-    for (let i = 15; i < 20; i++) {
-      const remaining = 20 - i;
-
-      // Filter available balls that can help reach target
-      const validBalls = available.filter((ball) => {
-        // Estimate if this ball can help reach target
-        const minPossibleSum = currentSum + ball + remaining * 1; // Worst case: all 1s
-        const maxPossibleSum = currentSum + ball + remaining * 80; // Best case: all 80s
-        return minPossibleSum <= targetMax && maxPossibleSum >= targetMin;
-      });
-
-      // Select from valid balls (or all if none valid)
-      const candidateBalls = validBalls.length > 0 ? validBalls : available;
-
-      // Prefer balls that move us toward target range
-      const optimalBalls = candidateBalls.filter((ball) => {
-        const newSum = currentSum + ball;
-        const avgRemaining = (1 + 80) / 2; // Average ball value
-        const projectedSum = newSum + remaining * avgRemaining;
-        return projectedSum >= targetMin && projectedSum <= targetMax;
-      });
-
-      const selectFrom =
-        optimalBalls.length > 0 ? optimalBalls : candidateBalls;
-      const ballResult = this.rng.pickRandom(selectFrom, seed);
-      const selectedBall = ballResult.value;
-
-      drawnBalls.push(selectedBall);
-      currentSum += selectedBall;
-      available.splice(available.indexOf(selectedBall), 1);
-    }
-
-    const finalSum = drawnBalls.reduce((a, b) => a + b, 0);
-    this.logger.debug(
-      `🎯 Weighted draw complete: Sum=${finalSum}, Target=${targetRange} (${targetMin}-${targetMax})`
+    this.logger.warn(
+      `⚠️ Weighted draw used fallback: Sum=${fallbackSum}, Target=${targetRange} (${targetMin}-${targetMax})`
     );
 
-    return drawnBalls;
+    return fallbackBalls;
   }
 
   /**

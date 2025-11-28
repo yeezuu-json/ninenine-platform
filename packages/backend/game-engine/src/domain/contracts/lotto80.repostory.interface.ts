@@ -17,5 +17,7 @@ export interface ILotto80Repository {
 
   findIncompleteRounds(): Promise<Lotto80[]>;
 
+  findCompletedRounds(limit: number): Promise<Lotto80[]>;
+
   save(round: Lotto80): Promise<Lotto80>;
 }

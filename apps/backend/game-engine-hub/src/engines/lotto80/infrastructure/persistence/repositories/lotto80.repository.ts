@@ -89,6 +89,18 @@ export class Lotto80Repository
     return ormList.map((orm) => this.mapToDomain(orm));
   }
 
+  async findCompletedRounds(limit: number): Promise<Lotto80[]> {
+    const ormList = await this.ormRepo.find({
+      where: {
+        status: LottoStatus.SETTLED,
+      },
+      order: { createdAt: 'DESC' },
+      take: limit,
+    });
+
+    return ormList.map((orm) => this.mapToDomain(orm));
+  }
+
   // Mappers
   protected mapToDomain(entity: Lotto80Entity): Lotto80 {
     return Lotto80.reconstitute({

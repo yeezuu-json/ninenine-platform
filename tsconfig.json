@@ -2,6 +2,12 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
   "references": [
     {
       "path": "./apps/backend/game-provider-svc-e2e"
@@ -59,6 +65,18 @@
     },
     {
       "path": "./packages/backend/game-engine"
+    },
+    {
+      "path": "./apps/frontend/lotto80-client-e2e"
+    },
+    {
+      "path": "./apps/frontend/lotto80-client"
+    },
+    {
+      "path": "./packages/frontend/ui"
+    },
+    {
+      "path": "./packages/frontend/core-provider"
     }
   ]
 }
